@@ -1,0 +1,57 @@
+/**
+ * DashboardBuilder
+ *
+ * @author Diginix Technologies www.diginixtech.com
+ * Support  - http://www.dashboardbuilder.net
+ * @copyright (C) 2018 Dashboardbuilder.net
+ * @version 2.1.7
+ * @license: license.txt
+ */
+
+include("inc/dashboard_dist.php");  // copy this file to inc folder 
+
+
+// for chart #1
+$data = new dashboardbuilder(); 
+$data->type =  "line";
+
+$data->source =  "Database"; 
+$data->rdbms =  "sqlite"; 
+$data->servername =  "";
+$data->username =  "";
+$data->password =  "";
+$data->dbname =  "data\Northwind.db";
+$data->xaxisSQL[0]=  "SELECT strftime(^%Y-%m^,o.shippeddate) as xaxis, sum(d.quantity) as yaxis from `order details` d, orders o  where o.orderid = d.orderid group by strftime(^%Y-%m^,o.orderdate) limit 50";
+$data->xaxisCol[0]=  "xaxis";
+$data->yaxisSQL[0]=  "SELECT strftime(^%Y-%m^,o.shippeddate) as xaxis, sum(d.quantity) as yaxis from `order details` d, orders o  where o.orderid = d.orderid group by strftime(^%Y-%m^,o.orderdate) limit 50";
+$data->yaxisCol[0]=  "yaxis";
+$data->name = "linechart";
+$data->title = "Line Chart";
+$data->orientation = "";
+$data->xaxistitle = "x-axis title";
+$data->yaxistitle = "y-axis title";
+$result[0] = $data->result();
+
+?>
+
+<!DOCTYPE html>
+<html> 
+<head> 
+	<script src="assets/js/dashboard.min.js"></script> <!-- copy this file to assets/js folder --> 
+	<!--<link rel="stylesheet" href="assets/css/bootstrap.min.css"> Bootstrap CSS file, change the path accordingly --> 
+
+
+</head>
+<body> 
+
+<div class="container">
+<div class="col-lg-12">
+<div class="panel panel-default">
+<div class="panel-heading"></div>
+    <div class="panel-body">
+        <?php echo $result[0];?>
+    </div>
+</div>
+</div>
+</div>
+</body>
